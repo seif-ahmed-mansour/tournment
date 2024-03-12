@@ -24,7 +24,6 @@ Route::get('/', function () {
     }
 });
 
-
 // Login
 Route::get('/login', [AuthController::class, "showLoginForm"])->name('login');
 Route::post('/login', [AuthController::class, "login"]);
@@ -38,3 +37,4 @@ Route::get("/admin", function () {
 Route::get("/admin", [EventController::class, "index"])->middleware("auth", "admin");
 //for getting adding event form
 Route::get("/admin/addEvent",[EventController::class,"add"])->name("addEvent");
+Route::post('/events', [EventController::class, 'store'])->name('storeEvent');
