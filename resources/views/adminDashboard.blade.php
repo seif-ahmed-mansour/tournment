@@ -1,3 +1,6 @@
+<?php
+$admin = Session::get('admin')
+?>
 @extends('layout.layout')
 <!DOCTYPE html>
 <html lang="en">

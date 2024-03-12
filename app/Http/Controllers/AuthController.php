@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,8 +22,10 @@ class AuthController extends Controller
             $user = Auth::user();
             if ($user->role === 'admin') {
                 // Redirect admin to admin dashboard
-                return view('adminDashboard', ['admin' => $user]);
-            } else {
+                Session::put('admin', $user);
+                // Redirect admin to admin dashboard
+                return redirect('/admin');
+                } else {
                 // Redirect regular user to user dashboard
                 return redirect()->intended('/');
             }
