@@ -16,7 +16,7 @@ $admin = Session::get('admin');
 <body>
     @section('body')
         <div class="container mt-4">
-            <h3>welcome back {{ $admin->name }}</h3>
+            <h3>welcome back <span class="text-info"> {{ $admin->name }}</span></h3>
             <hr>
             <h5 class="text-center">all events</h5>
             <table class="table">
