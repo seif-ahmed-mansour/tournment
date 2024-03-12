@@ -17,6 +17,26 @@ $admin = Session::get('admin')
     @section('body')
         <div class="container mt-4">
             <h3>welcome back {{ $admin->name }}</h3>
+            <hr>
+            <h5 class="text-center">all events</h5>
+            <table class="table">
+                <thead>
+                    <th>Event Name</th>
+                    <th>Event Type</th>
+                    <th>Event Category</th>
+                </thead>
+                <tbody>
+                    @foreach($events as $event)
+                    <tr>
+                        <td>{{ $event->name }}</td>
+                        <td>{{ $event->type }}</td>
+                        <td>{{ $event->category }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+
+            </table>
+            
         </div>
     @endsection
 </body>

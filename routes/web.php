@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,4 @@ Route::post('/register', [AuthController::class, "register"]);
 Route::get("/admin", function () {
     return view("adminDashboard");
 })->middleware('auth', 'admin');
+Route::get("/admin", [EventController::class, "index"])->middleware("auth", "admin");

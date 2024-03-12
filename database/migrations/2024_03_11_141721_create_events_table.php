@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name",255);
             $table->enum("type",["individual","team"])->default("individual");
-            $table->unsignedInteger("score")->default(0);
+            $table->string("category",255);
             $table->timestamps();
         });
     }
