@@ -17,8 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('landing');
+    if (Auth::check() && Auth::user()->role === 'admin') {
+        return redirect('/admin');
+    } else {
+        return view('landing');
+    }
 });
+
 
 // Login
 Route::get('/login', [AuthController::class, "showLoginForm"])->name('login');
