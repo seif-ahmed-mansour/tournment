@@ -38,7 +38,6 @@
             <button class="submit" type="submit">
                 Sign in
             </button>
-
             <p class="signup-link">
                 No account?
                 <a href="{{ route('register') }}">Sign up</a>

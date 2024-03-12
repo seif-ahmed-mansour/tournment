@@ -1,3 +1,4 @@
+@extends('layout.layout')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-    @extends('layout.layout')
     @section('body')
         <p>i am an admin</p>
     @endsection
