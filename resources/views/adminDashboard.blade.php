@@ -7,6 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <p>i am a admin</p>
+    @extends('layout.layout')
+    @section('body')
+        <p>i am an admin</p>
+    @endsection
 </body>
 </html>
