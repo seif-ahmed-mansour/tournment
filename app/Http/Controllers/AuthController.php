@@ -12,7 +12,8 @@ class AuthController extends Controller
     {
         return view('login');
     }
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             // Check the role of the authenticated user
@@ -27,7 +28,6 @@ class AuthController extends Controller
         }
         // If authentication fails, redirect back with error message
         return redirect()->back()->withInput()->withErrors(['email' => 'Invalid credentials']);
-    
     }
     public function showRegistrationForm()
     {
@@ -44,5 +44,12 @@ class AuthController extends Controller
         // Authenticate user after registration
         auth()->login($user);
         return redirect('/');
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Logout the user
+        $request->session()->invalidate(); // Invalidate the session
+        $request->session()->regenerateToken(); // Regenerate the CSRF token
+        return redirect('/'); // Redirect to the home page or any other page after logout
     }
 }
