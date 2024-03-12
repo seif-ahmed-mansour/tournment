@@ -23,6 +23,7 @@
 
 .input-container {
     position: relative;
+    margin: 15px 0;
 }
 
 .input-container input,
@@ -85,4 +86,10 @@
 
 .signup-link a {
     text-decoration: underline;
+}
+.alert {
+    padding: 10px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
 }

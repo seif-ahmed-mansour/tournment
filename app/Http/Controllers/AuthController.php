@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -33,18 +34,31 @@ class AuthController extends Controller
     {
         return view('register');
     }
-    public function register(Request $request)
-    {
-        // Validate request
-        $user = User::create([
-            'name' => $request->input('username'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+    public function register(Request $request) {
+        // Validate the user's input
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => [
+                'required',
+                'string',
+                'min:8',              // Minimum length of 8 characters
+                'regex:/[A-Z]/',      // Must contain at least one uppercase letter
+                'regex:/[a-z]/',      // Must contain at least one lowercase letter
+                'regex:/[0-9]/',      // Must contain at least one digit
+            ],
         ]);
-        // Authenticate user after registration
+        // Create a new user
+        $user=User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'type' => $request->has('type') ? 'team' : 'individual',
+        ]);
         auth()->login($user);
         return redirect('/');
     }
+
     public function logout(Request $request)
     {
         Auth::logout(); // Logout the user

@@ -3,5 +3,9 @@
     landing
 @endsection
 @section('body')
-    <p>hello guest</p>
+    @guest
+        <p>hello guest</p>
+    @else
+        <p>hello user</p>
+    @endguest
 @endsection
