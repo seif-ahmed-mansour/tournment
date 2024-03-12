@@ -31,3 +31,5 @@ Route::get("/admin", function () {
     return view("adminDashboard");
 })->middleware('auth', 'admin');
 Route::get("/admin", [EventController::class, "index"])->middleware("auth", "admin");
+//for getting adding event form
+Route::get("/admin/addEvent",[EventController::class,"add"])->name("addEvent");

@@ -10,6 +10,10 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
-        return view("adminDashboard",['events' => $events]);
+        return view("adminDashboard", ['events' => $events]);
+    }
+    public function add()
+    {
+        return view('addEvent');
     }
 }

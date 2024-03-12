@@ -1,5 +1,5 @@
 <?php
-$admin = Session::get('admin')
+$admin = Session::get('admin');
 ?>
 @extends('layout.layout')
 <!DOCTYPE html>
@@ -26,17 +26,19 @@ $admin = Session::get('admin')
                     <th>Event Category</th>
                 </thead>
                 <tbody>
-                    @foreach($events as $event)
-                    <tr>
-                        <td>{{ $event->name }}</td>
-                        <td>{{ $event->type }}</td>
-                        <td>{{ $event->category }}</td>
-                    </tr>
+                    @foreach ($events as $event)
+                        <tr>
+                            <td>{{ $event->name }}</td>
+                            <td>{{ $event->type }}</td>
+                            <td>{{ $event->category }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
-
             </table>
-            
+
+        </div>
+        <div class="container">
+            <a href="{{route('addEvent')}}" class="btn btn-primary">Add event</a>
         </div>
     @endsection
 </body>
