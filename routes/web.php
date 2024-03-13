@@ -38,3 +38,5 @@ Route::get("/admin", [EventController::class, "index"])->middleware("auth", "adm
 //for getting adding event form
 Route::get("/admin/addEvent",[EventController::class,"add"])->name("addEvent");
 Route::post('/events', [EventController::class, 'store'])->name('storeEvent');
+
+Route::post('/participate', [EventController::class, 'participate'])->name('participateEvents');

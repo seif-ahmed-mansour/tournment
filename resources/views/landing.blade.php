@@ -19,7 +19,12 @@
                 @guest
                     <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
                 @else
-                    <a href="" class="btn btn-primary">Complete Events</a>
+                    @if (auth()->check())
+                        <form action="{{ route('participateEvents') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Participate in events</button>
+                        </form>
+                    @endif
                 @endguest
             </div>
             <div class="col-md-6">
