@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Leaderboard</div>
-
                     <div class="card-body">
                         <table class="table">
                             <thead>
@@ -28,6 +27,7 @@
                         </table>
                     </div>
                 </div>
+                <a href="/" class="btn btn-primary my-3">back to home</a>
             </div>
         </div>
     </div>

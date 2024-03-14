@@ -79,33 +79,33 @@ class EventController extends Controller
             return redirect()->route('login');
         }
     }
-    
+
     public function eventSeatsCompleted()
     {
         return view('event_seats_completed');
     }
-    
+
     public function showQuestions(Event $event)
     {
         $userType = auth()->user()->type; // Get the type of authenticated user
-    
+
         // Fetch questions only if the authenticated user's type matches the event type
         $questions = ($event->type === $userType) ? $event->questions : [];
-    
+
         // Check if there are any more events of the same type after the current event
         $remainingEvents = Event::where('type', $userType)
             ->where('id', '>', $event->id)
             ->exists();
-    
+
         if (!$remainingEvents && empty($questions)) {
             return redirect()->route('congrats'); // Redirect to another page if no more events of the same type
         }
-    
+
         return view('show_questions', compact('event', 'questions'));
     }
-    
-    
-        
+
+
+
     public function submitAnswers(Request $request, Event $event)
     {
         $user = auth()->user();
@@ -121,19 +121,19 @@ class EventController extends Controller
                 );
             }
         }
-    
+
         // Find the next event of the same type as the user
         $nextEvent = Event::where('id', '>', $event->id)
             ->where('type', $user->type)
             ->first();
-    
+
         if ($nextEvent) {
             return redirect()->route('showQuestions', $nextEvent);
         } else {
             return redirect()->route('congrats');
         }
     }
-    
+
     public function leaderboard()
     {
         $users = User::with(['participants' => function ($query) {
