@@ -16,7 +16,11 @@ $admin = Session::get('admin');
 <body>
     @section('body')
         <div class="container mt-4">
-            <h3>welcome back <span class="text-info"> {{ $admin->name }}</span></h3>
+            @if ($admin)
+                <h3>welcome back <span class="text-info">{{ $admin->name }}</span></h3>
+            @else
+                <h3>welcome to the first time our new <span class="text-info">Admin</span></h3>
+            @endif
             <hr>
             <h5 class="text-center">all events</h5>
             <table class="table">
@@ -38,7 +42,7 @@ $admin = Session::get('admin');
 
         </div>
         <div class="container">
-            <a href="{{route('addEvent')}}" class="btn btn-primary">Add event</a>
+            <a href="{{ route('addEvent') }}" class="btn btn-primary">Add event</a>
         </div>
     @endsection
 </body>

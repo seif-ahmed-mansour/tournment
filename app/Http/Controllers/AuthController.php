@@ -23,9 +23,8 @@ class AuthController extends Controller
             if ($user->role === 'admin') {
                 // Redirect admin to admin dashboard
                 Session::put('admin', $user);
-                // Redirect admin to admin dashboard
                 return redirect('/admin');
-                } else {
+            } else {
                 // Redirect regular user to user dashboard
                 return redirect()->intended('/');
             }
@@ -37,7 +36,8 @@ class AuthController extends Controller
     {
         return view('register');
     }
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         // Validate the user's input
         $validated = $request->validate([
             'name' => 'required|max:255',
@@ -52,7 +52,7 @@ class AuthController extends Controller
             ],
         ]);
         // Create a new user
-        $user=User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
