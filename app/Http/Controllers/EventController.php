@@ -121,13 +121,19 @@ class EventController extends Controller
                 );
             }
         }
-        $nextEvent = Event::where('id', '>', $event->id)->first();
+    
+        // Find the next event of the same type as the user
+        $nextEvent = Event::where('id', '>', $event->id)
+            ->where('type', $user->type)
+            ->first();
+    
         if ($nextEvent) {
             return redirect()->route('showQuestions', $nextEvent);
         } else {
             return redirect()->route('congrats');
         }
     }
+    
     public function leaderboard()
     {
         $users = User::with(['participants' => function ($query) {
