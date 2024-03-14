@@ -93,7 +93,7 @@ class EventController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
-        if ($participant && $participant->score > 0) {
+        if ($participant && $participant->score > 1) {
             $remainingEvents = Event::where('type', $userType)
                 ->where('id', '>', $event->id)
                 ->exists();
