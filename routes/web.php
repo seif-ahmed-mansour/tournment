@@ -40,3 +40,8 @@ Route::get("/admin/addEvent",[EventController::class,"add"])->name("addEvent");
 Route::post('/events', [EventController::class, 'store'])->name('storeEvent');
 
 Route::post('/participate', [EventController::class, 'participate'])->name('participateEvents');
+
+Route::get('/events/{event}', [EventController::class, 'showQuestions'])->name('showQuestions');
+Route::post('/events/{event}/submit', [EventController::class, 'submitAnswers'])->name('submitAnswers');
+Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
+Route::get('/events/{event}/leaderboard', [EventController::class, 'eventLeaderboard'])->name('eventLeaderboard');

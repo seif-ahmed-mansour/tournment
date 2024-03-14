@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -51,10 +53,9 @@ class EventController extends Controller
     }
     public function participate(Request $request)
     {
-        $user = Auth::user(); // Get the authenticated user
+        if (Auth::check()) {
+            $user = Auth::user();
 
-        // Check if the user is authenticated
-        if ($user) {
             // Get the user's type
             $userType = $user->type;
 
@@ -77,10 +78,84 @@ class EventController extends Controller
                 }
             }
 
-            // Redirect or return a response as needed
+            if ($events->isEmpty()) {
+                return view('no_existing_events');
+            } else {
+                // Redirect the user to the questions page of the first event they participated in
+                return redirect()->route('showQuestions', $events->first());
+            }
         } else {
-            // Handle the case where the user is not authenticated
+            return redirect()->route('login');
         }
     }
 
+    public function showQuestions(Event $event)
+    {
+        // Retrieve questions for the specified event
+        $questions = $event->questions;
+
+        return view('show_questions', compact('event', 'questions'));
+    }
+
+    public function submitAnswers(Request $request, Event $event)
+    {
+        // Validate the submitted answers and update scores
+        $user = auth()->user();
+        $answers = $request->input('user_answers');
+
+        foreach ($answers as $questionId => $answer) {
+            $question = Question::findOrFail($questionId);
+            if ($question->answer === $answer) {
+                // Update or create the event participant record and increment the score by 5
+                $participant = EventParticipant::updateOrCreate(
+                    ['event_id' => $event->id, 'user_id' => $user->id],
+                    ['score' => EventParticipant::where('event_id', $event->id)
+                        ->where('user_id', $user->id)
+                        ->value('score') + 5]
+                );
+            }
+        }
+
+        // Determine the next event (you need to implement this logic)
+        // Determine the next event (you need to implement this logic)
+        $nextEvent = Event::where('id', '>', $event->id)->first();
+
+        // Redirect to the next event or leaderboard
+        if ($nextEvent) {
+            return redirect()->route('showQuestions', $nextEvent);
+        } else {
+            return redirect()->route('leaderboard');
+        }
+    }
+
+
+
+
+    public function leaderboard()
+    {
+        // Retrieve non-admin users with their related event participants
+        $users = User::with(['participants' => function ($query) {
+            $query->select('user_id', DB::raw('SUM(score) as total_score'))
+                ->groupBy('user_id');
+        }])
+        ->where('role', 'user')
+        ->get();
+
+        // Sort users by total score
+        $leaderboard = $users->sortByDesc(function ($user) {
+            return $user->participants->sum('total_score');
+        });
+        return view('leaderboard', compact('leaderboard'));
+    }
+
+
+
+
+    public function eventLeaderboard(Event $event)
+    {
+        // Retrieve leaderboard data for a specific event
+        $eventLeaderboard = $event->participants()->with('user')->orderByDesc('score')->get();
+
+        return view('event_leaderboard', compact('event', 'eventLeaderboard'));
+    }
 }
