@@ -53,10 +53,8 @@ class EventController extends Controller
             $events = Event::where('type', $userType)->get();
             foreach ($events as $event) {
                 if ($event->type === 'individual') {
-                    // Check the number of participants for the individual event
                     $participantCount = EventParticipant::where('event_id', $event->id)->count();
                     if ($participantCount >= 20) {
-                        // Redirect the user to the page indicating event seats are filled
                         return redirect()->route('eventSeatsCompleted');
                     }
                 }
@@ -89,26 +87,20 @@ class EventController extends Controller
     {
         $user = auth()->user();
         $userType = $user->type;
-
-        // Fetch questions only if the authenticated user's type matches the event type
         $questions = ($event->type === $userType) ? $event->questions : [];
 
-        // Check if the user has already participated in the event and has a score
         $participant = EventParticipant::where('event_id', $event->id)
             ->where('user_id', $user->id)
             ->first();
 
-        // If the user has a score for this event, skip it
         if ($participant && $participant->score > 0) {
             $remainingEvents = Event::where('type', $userType)
                 ->where('id', '>', $event->id)
                 ->exists();
 
             if (!$remainingEvents) {
-                return redirect()->route('congrats'); // Redirect to congrats page if no more events
+                return redirect()->route('congrats'); 
             }
-
-            // Find the next event of the same type as the user
             $nextEvent = Event::where('id', '>', $event->id)
                 ->where('type', $userType)
                 ->first();
@@ -116,13 +108,12 @@ class EventController extends Controller
             return redirect()->route('showQuestions', $nextEvent);
         }
 
-        // Check if there are any more events of the same type after the current event
         $remainingEvents = Event::where('type', $userType)
             ->where('id', '>', $event->id)
             ->exists();
 
         if (!$remainingEvents && empty($questions)) {
-            return redirect()->route('congrats'); // Redirect to congrats page if no more events
+            return redirect()->route('congrats'); 
         }
 
         return view('show_questions', compact('event', 'questions'));
@@ -147,7 +138,6 @@ class EventController extends Controller
             }
         }
 
-        // Find the next event of the same type as the user
         $nextEvent = Event::where('id', '>', $event->id)
             ->where('type', $user->type)
             ->first();
