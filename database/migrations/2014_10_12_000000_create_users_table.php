@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum("type",["individual","team"])->default("individual");
             $table->enum("role",["user","admin"])->default("user");
+            $table->boolean('is_leader')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

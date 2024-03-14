@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         "role",
-        "type"
+        "type",
+        'is_leader'
     ];
 
     /**
@@ -49,5 +50,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventParticipant::class);
     }
-
 }

@@ -35,7 +35,8 @@ Route::get("/admin", function () {
     return view("adminDashboard");
 })->middleware('auth', 'admin');
 Route::get("/admin", [EventController::class, "index"])->middleware("auth", "admin");
-Route::get("/admin/addEvent",[EventController::class,"add"])->name("addEvent");
+Route::get("/admin/addEvent", [EventController::class, "add"])->name("addEvent");
+Route::post('/admin/choose-leader', [EventController::class, 'chooseLeader'])->name('chooseLeader');
 Route::post('/events', [EventController::class, 'store'])->name('storeEvent');
 
 Route::post('/participate', [EventController::class, 'participate'])->name('participateEvents');
@@ -44,6 +45,6 @@ Route::get('/events/{event}', [EventController::class, 'showQuestions'])->name('
 Route::post('/events/{event}/submit', [EventController::class, 'submitAnswers'])->name('submitAnswers');
 Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
 Route::get('/events/{event}/leaderboard', [EventController::class, 'eventLeaderboard'])->name('eventLeaderboard');
-Route::get("/congrats",function(){
+Route::get("/congrats", function () {
     return view("congrats");
 })->name("congrats");
