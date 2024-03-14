@@ -20,11 +20,22 @@
                     <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
                 @else
                     @if (auth()->check())
-                        <form action="{{ route('participateEvents') }}" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-primary">Participate in events</button>
-                            <a href="{{ route('leaderboard') }}" class="btn btn-info text-light">view leaderboards</a>
-                        </form>
+                        @php
+                            $participatedEvents = auth()->user()->participants()->count();
+                        @endphp
+                        @if ($participatedEvents > 0)
+                            <form action="{{ route('participateEvents') }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Complete your events</button>
+                                <a href="{{ route('leaderboard') }}" class="btn btn-info text-light">View leaderboards</a>
+                            </form>
+                        @else
+                            <form action="{{ route('participateEvents') }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Participate in events</button>
+                                <a href="{{ route('leaderboard') }}" class="btn btn-info text-light">View leaderboards</a>
+                            </form>
+                        @endif
                     @endif
                 @endguest
             </div>
