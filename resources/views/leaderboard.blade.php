@@ -1,7 +1,7 @@
 @extends('layout.layout')
 
 @section('body')
-    <div class="container">
+    <div class="container mt-2">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -11,7 +11,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
+                                    {{-- <th>Rank</th> --}}
                                     <th>User</th>
                                     <th>Total Score</th>
                                 </tr>
@@ -19,7 +19,7 @@
                             <tbody>
                                 @foreach ($leaderboard as $key => $user)
                                     <tr class="{{ $user->id === auth()->id() ? 'table-success' : '' }}">
-                                        <td>{{ $key + 1 }}</td>
+                                        {{-- <td>{{ $key + 1 }}</td> --}}
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->participants->sum('total_score') }}</td>
                                     </tr>
