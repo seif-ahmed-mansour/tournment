@@ -25,9 +25,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <a href="/" class="btn btn-primary my-3">back to home</a>
                     </div>
                 </div>
-                <a href="/" class="btn btn-primary my-3">back to home</a>
             </div>
         </div>
     </div>
