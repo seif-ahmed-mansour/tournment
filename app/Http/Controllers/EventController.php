@@ -52,6 +52,14 @@ class EventController extends Controller
             $userType = $user->type;
             $events = Event::where('type', $userType)->get();
             foreach ($events as $event) {
+                if ($event->type === 'individual') {
+                    // Check the number of participants for the individual event
+                    $participantCount = EventParticipant::where('event_id', $event->id)->count();
+                    if ($participantCount >= 20) {
+                        // Redirect the user to the page indicating event seats are filled
+                        return redirect()->route('eventSeatsCompleted');
+                    }
+                }
                 $existingParticipant = EventParticipant::where('event_id', $event->id)
                     ->where('user_id', $user->id)
                     ->first();
@@ -71,12 +79,33 @@ class EventController extends Controller
             return redirect()->route('login');
         }
     }
+    
+    public function eventSeatsCompleted()
+    {
+        return view('event_seats_completed');
+    }
+    
     public function showQuestions(Event $event)
     {
-        $questions = $event->questions;
+        $userType = auth()->user()->type; // Get the type of authenticated user
+    
+        // Fetch questions only if the authenticated user's type matches the event type
+        $questions = ($event->type === $userType) ? $event->questions : [];
+    
+        // Check if there are any more events of the same type after the current event
+        $remainingEvents = Event::where('type', $userType)
+            ->where('id', '>', $event->id)
+            ->exists();
+    
+        if (!$remainingEvents && empty($questions)) {
+            return redirect()->route('congrats'); // Redirect to another page if no more events of the same type
+        }
+    
         return view('show_questions', compact('event', 'questions'));
     }
-
+    
+    
+        
     public function submitAnswers(Request $request, Event $event)
     {
         $user = auth()->user();

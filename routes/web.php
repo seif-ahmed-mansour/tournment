@@ -40,6 +40,7 @@ Route::post('/admin/choose-leader', [EventController::class, 'chooseLeader'])->n
 Route::post('/events', [EventController::class, 'store'])->name('storeEvent');
 
 Route::post('/participate', [EventController::class, 'participate'])->name('participateEvents');
+Route::get('/events/seats-completed', [EventController::class, 'eventSeatsCompleted'])->name('eventSeatsCompleted');
 
 Route::get('/events/{event}', [EventController::class, 'showQuestions'])->name('showQuestions');
 Route::post('/events/{event}/submit', [EventController::class, 'submitAnswers'])->name('submitAnswers');

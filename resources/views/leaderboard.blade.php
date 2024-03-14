@@ -18,7 +18,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($leaderboard as $key => $user)
-                                    <tr>
+                                    <tr class="{{ $user->id === auth()->id() ? 'table-success' : '' }}">
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->participants->sum('total_score') }}</td>
@@ -31,6 +31,7 @@
             </div>
         </div>
     </div>
+
 
     @if (auth()->check() && !auth()->user()->participants->count())
         <div class="container mt-3">
