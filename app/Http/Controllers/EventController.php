@@ -124,7 +124,7 @@ class EventController extends Controller
         if ($nextEvent) {
             return redirect()->route('showQuestions', $nextEvent);
         } else {
-            return redirect()->route('leaderboard');
+            return redirect()->route('congrats');
         }
     }
 

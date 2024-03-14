@@ -23,6 +23,7 @@
                         <form action="{{ route('participateEvents') }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-primary">Participate in events</button>
+                            <a href="{{ route('leaderboard') }}" class="btn btn-info text-light">view leaderboards</a>
                         </form>
                     @endif
                 @endguest

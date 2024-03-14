@@ -18,10 +18,10 @@
                         </thead>
                         <tbody>
                             @foreach ($leaderboard as $key => $user)
-                                <tr>
+                                <tr class="{{ $user->id === auth()->id() ? 'table-success' : '' }}">
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $user->name }}</td>
-                                    <td>{{ $user->participants->sum('total_score') }}</td> <!-- Access total_score via participants relationship -->
+                                    <td>{{ $user->participants->sum('total_score') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -31,5 +31,6 @@
         </div>
     </div>
 </div>
+
 
 @endsection

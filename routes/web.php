@@ -45,3 +45,6 @@ Route::get('/events/{event}', [EventController::class, 'showQuestions'])->name('
 Route::post('/events/{event}/submit', [EventController::class, 'submitAnswers'])->name('submitAnswers');
 Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
 Route::get('/events/{event}/leaderboard', [EventController::class, 'eventLeaderboard'])->name('eventLeaderboard');
+Route::get("/congrats",function(){
+    return view("congrats");
+})->name("congrats");
