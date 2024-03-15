@@ -118,10 +118,6 @@ class EventController extends Controller
 
         return view('show_questions', compact('event', 'questions'));
     }
-
-
-
-
     public function submitAnswers(Request $request, Event $event)
     {
         $user = auth()->user();
