@@ -28,6 +28,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/addEvent', [EventController::class, "add"])->name("addEvent");
     Route::post('/admin/choose-leader', [EventController::class, 'chooseLeader'])->name('chooseLeader');
     Route::post('/events', [EventController::class, 'store'])->name('storeEvent');
+    Route::get('/events/{id}/edit', [EventController::class, 'event_edit'])->name('editEvent');
+    Route::delete('/events/{id}', [EventController::class, 'event_destroy'])->name('deleteEvent');
+    Route::put('/events/{id}', [EventController::class, 'event_store'])->name('updateEvent');
+
 });
 
 // Event Routes

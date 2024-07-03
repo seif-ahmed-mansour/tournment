@@ -99,7 +99,7 @@ class EventController extends Controller
                 ->exists();
 
             if (!$remainingEvents) {
-                return redirect()->route('congrats'); 
+                return redirect()->route('congrats');
             }
             $nextEvent = Event::where('id', '>', $event->id)
                 ->where('type', $userType)
@@ -113,7 +113,7 @@ class EventController extends Controller
             ->exists();
 
         if (!$remainingEvents && empty($questions)) {
-            return redirect()->route('congrats'); 
+            return redirect()->route('congrats');
         }
 
         return view('show_questions', compact('event', 'questions'));
@@ -121,10 +121,13 @@ class EventController extends Controller
     public function submitAnswers(Request $request, Event $event)
     {
         $user = auth()->user();
-        $answers = $request->input('user_answers');
-        foreach ($answers as $questionId => $answer) {
+        $user_answers = $request->input('user_answers');
+        // dd($user_answers);
+        foreach ($user_answers as $questionId => $user_answer) {
             $question = Question::findOrFail($questionId);
-            if ($question->answer === $answer) {
+            $correct_answer = $question->answer;
+    
+            if ($correct_answer === $user_answer) {
                 $participant = EventParticipant::updateOrCreate(
                     ['event_id' => $event->id, 'user_id' => $user->id],
                     ['score' => EventParticipant::where('event_id', $event->id)
@@ -133,17 +136,19 @@ class EventController extends Controller
                 );
             }
         }
-
+    
         $nextEvent = Event::where('id', '>', $event->id)
             ->where('type', $user->type)
             ->first();
-
+    
         if ($nextEvent) {
             return redirect()->route('showQuestions', $nextEvent);
         } else {
             return redirect()->route('congrats');
         }
     }
+    
+    
 
     public function leaderboard()
     {
@@ -166,5 +171,51 @@ class EventController extends Controller
         $eventLeaderboard = $event->participants()->with('user')->orderByDesc('score')->get();
 
         return view('event_leaderboard', compact('event', 'eventLeaderboard'));
+    }
+    public function event_edit($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('eventEdit', compact('event'));
+    }
+    public function event_destroy($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->participants()->delete();
+        $event->questions()->delete();
+        $event->delete();
+        return redirect("/admin");
+    }
+    public function event_store(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'type' => 'required|string',
+            'category' => 'required|string|max:255',
+            'questions' => 'required|array',
+            'questions.*' => 'required|string|max:255',
+            'answers' => 'required|array',
+            'answers.*' => 'required|string|max:255',
+        ]);
+
+        $event = Event::findOrFail($id);
+        $event->name = $request->name;
+        $event->type = $request->type;
+        $event->category = $request->category;
+        $event->save();
+
+        // Update or delete existing questions based on form data
+        foreach ($event->questions as $question) {
+            if (!isset($request->questions[$question->id])) {
+                $question->delete();
+            }
+        }
+
+        foreach ($request->questions as $index => $questionText) {
+            $question = $event->questions()->updateOrCreate(
+                ['id' => $index],
+                ['question' => $questionText, 'answer' => $request->answers[$index]]
+            );
+        }
+        return redirect("/admin");
     }
 }

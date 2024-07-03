@@ -45,10 +45,10 @@ class AuthController extends Controller
             'password' => [
                 'required',
                 'string',
-                'min:8',              // Minimum length of 8 characters
-                'regex:/[A-Z]/',      // Must contain at least one uppercase letter
-                'regex:/[a-z]/',      // Must contain at least one lowercase letter
-                'regex:/[0-9]/',      // Must contain at least one digit
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',      
+                'regex:/[0-9]/',    
             ],
         ]);
         // Create a new user
